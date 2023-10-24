@@ -4,7 +4,6 @@ extern crate quote;
 extern crate syn;
 extern crate proc_macro2;
 
-use ark_std::{end_timer, start_timer};
 use quote::quote;
 use syn::{parse_macro_input, ItemFn};
 
@@ -26,12 +25,10 @@ pub fn run_time(
     let caller = quote! {
         // rebuild the function, add a func named is_expired to check user login session expire or not.
         #func_vis fn #func_name #func_generics(#func_inputs) #func_output {
-            use std::time;
-
-          let start=  start_timer!(|| "start_time");
-            let start = time::Instant::now();
+            // TODO porting start_timer things  here.
+            use ark_std::{end_timer, start_timer};
+            let start=  start_timer!(|| "start_time");
             #func_block
-            println!("time cost {:?}", start.elapsed());
             end_timer!(start);
         }
     };
