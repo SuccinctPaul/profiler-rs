@@ -7,4 +7,8 @@ edition = "2021"
 
 [dependencies]
 profiler_macro = {path = "../profiler_macro"}
-ark-std = { version = "0.4.0" , features = ["print-trace"]}
+ark-std = "0.4.0"
+
+
+[features]
+profile = ["ark-std/print-trace"]

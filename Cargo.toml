@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "profile-rs",
-"profiler_macro"]
+    "profiler_macro",
+]
 
 workspace.resolver = "2"

@@ -7,8 +7,9 @@ extern crate proc_macro2;
 use quote::quote;
 use syn::{parse_macro_input, ItemFn};
 
+/// Timer profiler macro. Cooperate with `ark-std`
 #[proc_macro_attribute]
-pub fn run_time(
+pub fn time_profiler(
     attr: proc_macro::TokenStream,
     func: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
@@ -35,7 +36,6 @@ pub fn run_time(
         #func_vis fn #func_name #func_generics(#func_inputs) #func_output {
             // TODO porting start_timer things  here.
             use ark_std::{end_timer, start_timer};
-            // let start=  start_timer!(|| name);
             let start=  start_timer!(|| #name);
             #func_block
             end_timer!(start);
