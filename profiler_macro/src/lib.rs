@@ -1,3 +1,39 @@
+//! To use this macro,
+//!
+//! * First thing to do is config `Cargo.toml` :
+//!
+//! ```toml
+//! [dependencies]
+//! profiler_macro = {path = "../profiler_macro"}
+//! ark-std = { version = "0.4.0", optional = true }
+//!
+//! [features]
+//! profile = ["ark-std/print-trace"] # Must use this feature!
+//! ```
+//!
+//!
+//! * Second to declare on target function:
+//! ```rust
+//!  extern crate profiler_macro;
+//!  use profiler_macro::time_profiler;
+//!
+//!  #[test]
+//!  fn test() {
+//!      #[time_profiler()] // default: with the function's name
+//!      fn outer(t: u64) {
+//!          inner(t-1);
+//!          println!("outer:{t}");
+//!      }
+//!
+//!      #[time_profiler("inner")]
+//!      fn inner(t: u64) {
+//!          println!("inner:{t}");
+//!      }
+//!
+//!      outer(4);
+//!  }
+//! ```
+
 #[macro_use]
 extern crate quote;
 #[macro_use]

@@ -4,13 +4,10 @@ use profiler_macro::time_profiler;
 
 #[test]
 fn test() {
-    // default: with the function's name
-    #[time_profiler()]
+    #[time_profiler()] // default: with the function's name
     fn outer(t: u64) {
-        for i in 0..t {
-            println!("outer:{i}");
-            inner(i);
-        }
+        inner(t - 1);
+        println!("outer:{t}");
     }
 
     #[time_profiler("inner")]
@@ -19,5 +16,4 @@ fn test() {
     }
 
     outer(4);
-    outer(2);
 }
