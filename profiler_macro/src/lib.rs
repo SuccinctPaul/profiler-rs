@@ -34,11 +34,16 @@ pub fn time_profiler(
     let caller = quote! {
         // rebuild the function, add a func named is_expired to check user login session expire or not.
         #func_vis fn #func_name #func_generics(#func_inputs) #func_output {
-            // TODO porting start_timer things  here.
+            #[cfg(feature = "profile")]
             use ark_std::{end_timer, start_timer};
-            let start=  start_timer!(|| #name);
+
+            #[cfg(feature = "profile")]
+            let start=  ark_std::start_timer!(|| #name);
+
             #func_block
-            end_timer!(start);
+
+            #[cfg(feature = "profile")]
+            ark_std::end_timer!(start);
         }
     };
 
