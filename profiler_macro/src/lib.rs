@@ -1,17 +1,24 @@
-extern crate proc_macro;
+#[macro_use]
+extern crate quote;
+#[macro_use]
+extern crate syn;
+extern crate proc_macro2;
 
-use proc_macro2::TokenStream;
+use ark_std::{end_timer, start_timer};
 use quote::quote;
 use syn::{parse_macro_input, ItemFn};
 
 #[proc_macro_attribute]
-pub fn run_time(_: TokenStream, func: TokenStream) -> TokenStream {
+pub fn run_time(
+    _attr: proc_macro::TokenStream,
+    func: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
     let func = parse_macro_input!(func as ItemFn);
     let func_vis = &func.vis; // like pub
     let func_block = &func.block; // { some statement or expression here }
 
     let func_decl = func.sig;
-    let func_name = &func.ident; // function name
+    let func_name = &func_decl.ident; // 函数名
     let func_generics = &func_decl.generics;
     let func_inputs = &func_decl.inputs;
     let func_output = &func_decl.output;
@@ -21,11 +28,25 @@ pub fn run_time(_: TokenStream, func: TokenStream) -> TokenStream {
         #func_vis fn #func_name #func_generics(#func_inputs) #func_output {
             use std::time;
 
+          let start=  start_timer!(|| "start_time");
             let start = time::Instant::now();
             #func_block
             println!("time cost {:?}", start.elapsed());
+            end_timer!(start);
         }
     };
 
     caller.into()
+}
+
+// my-macro/src/lib.rs
+
+#[proc_macro_attribute]
+pub fn show_streams(
+    attr: proc_macro::TokenStream,
+    item: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+    println!("attr: \"{}\"", attr.to_string());
+    println!("item: \"{}\"", item.to_string());
+    item
 }
