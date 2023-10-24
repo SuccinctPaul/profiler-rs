@@ -5,24 +5,21 @@ use profiler_macro::run_time;
 mod test {
     use profiler_macro::{run_time, show_streams};
 
-    #[run_time]
-    fn outer(t: u64) {
-        println!("start");
-        for i in 0..t {
-            for j in 0..i {
-                println!("outer:{i}_{j}");
-            }
-        }
-        println!("finish");
-    }
-
-    #[run_time]
-    fn inner(t: u64) {
-        println!("inner:{t}");
-    }
-
     #[test]
     fn test_timer() {
+        #[run_time()]
+        fn outer(t: u64) {
+            for i in 0..t {
+                println!("outer:{i}");
+                inner(i);
+            }
+        }
+
+        #[run_time("inner_afsadsfads")]
+        fn inner(t: u64) {
+            println!("inner:{t}");
+        }
+
         outer(4);
         outer(2);
     }
