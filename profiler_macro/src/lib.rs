@@ -64,7 +64,7 @@ pub fn time_profiler(
     let name = if attr_name.is_empty() {
         func_name.to_string()
     } else {
-        attr_name.replace("\"", "")
+        attr_name.replace('\"', "")
     };
 
     let caller = quote! {
@@ -93,7 +93,7 @@ pub fn show_streams(
     attr: proc_macro::TokenStream,
     item: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
-    println!("attr: \"{}\"", attr.to_string());
-    println!("item: \"{}\"", item.to_string());
+    println!("attr: \"{}\"", attr);
+    println!("item: \"{}\"", item);
     item
 }
