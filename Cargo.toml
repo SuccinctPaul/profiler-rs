@@ -1,6 +1,6 @@
 [workspace]
 members = [
-    "profile-rs",
+    "profiler_rs",
     "profiler_macro",
 ]
 

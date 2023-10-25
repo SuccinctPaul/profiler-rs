@@ -8,13 +8,12 @@
 //! ark-std = { version = "0.4.0", optional = true }
 //!
 //! [features]
-//! profile = ["ark-std/print-trace"] # Must use this feature!
+//! profiler = ["ark-std/print-trace"] # Must use this feature!
 //! ```
 //!
 //!
 //! * Second to declare on target function:
 //! ```rust
-//!  extern crate profiler_macro;
 //!  use profiler_macro::time_profiler;
 //!
 //!  #[test]
@@ -33,12 +32,18 @@
 //!      outer(4);
 //!  }
 //! ```
+//!
+//! * Run it:
+//! ```bash
+//!  cargo test test --features profiler -- --nocapture
+//! ```
+//!
+//!
+//!
 
-#[macro_use]
-extern crate quote;
-#[macro_use]
-extern crate syn;
 extern crate proc_macro2;
+extern crate quote;
+extern crate syn;
 
 use quote::quote;
 use syn::{parse_macro_input, ItemFn};
@@ -70,30 +75,20 @@ pub fn time_profiler(
     let caller = quote! {
         // rebuild the function, add a func named is_expired to check user login session expire or not.
         #func_vis fn #func_name #func_generics(#func_inputs) #func_output {
-            #[cfg(feature = "profile")]
+            #[cfg(feature = "profiler")]
             use ark_std::{end_timer, start_timer};
 
-            #[cfg(feature = "profile")]
+            #[cfg(feature = "profiler")]
             let start=  ark_std::start_timer!(|| #name);
 
-            #func_block
+            let result =  #func_block;
 
-            #[cfg(feature = "profile")]
+            #[cfg(feature = "profiler")]
             ark_std::end_timer!(start);
+
+            result
         }
     };
 
     caller.into()
-}
-
-// my-macro/src/lib.rs
-
-#[proc_macro_attribute]
-pub fn show_streams(
-    attr: proc_macro::TokenStream,
-    item: proc_macro::TokenStream,
-) -> proc_macro::TokenStream {
-    println!("attr: \"{}\"", attr);
-    println!("item: \"{}\"", item);
-    item
 }
