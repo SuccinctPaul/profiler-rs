@@ -33,12 +33,14 @@
 //!  }
 //! ```
 //!
-//! * Run it:
+//! * Profile it:
 //! ```bash
 //!  cargo test test --features profiler -- --nocapture
 //! ```
-//!
-//!
+//! * Normal run:
+//! ```bash
+//!  cargo test test -- --nocapture
+//! ```
 //!
 
 extern crate proc_macro2;

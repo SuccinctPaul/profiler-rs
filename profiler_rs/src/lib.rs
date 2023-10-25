@@ -1,6 +1,11 @@
 #[allow(unused_imports)]
 use profiler_macro::time_profiler;
 
+// dev/product:
+// cargo test test -- --nocapture
+//
+// profile:
+//      cargo test test --features profiler -- --nocapture
 #[test]
 fn test() {
     #[time_profiler()] // default: with the function's name
