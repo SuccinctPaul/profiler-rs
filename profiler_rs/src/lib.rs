@@ -1,3 +1,10 @@
+#![allow(clippy::suspicious_arithmetic_impl)]
+#![allow(clippy::suspicious_op_assign_impl)]
+#![allow(clippy::many_single_char_names)]
+#![allow(clippy::match_bool)]
+#![allow(clippy::too_many_arguments)]
+#![deny(rustdoc::broken_intra_doc_links)]
+#![deny(missing_docs)]
 #[allow(unused_imports)]
 use profiler_macro::time_profiler;
 
@@ -28,6 +35,10 @@ fn test_trait() {
     trait Animal {
         // For now, time_profiler can't be used for trait.
         fn name() -> String;
+
+        // fn default() -> String {
+        //     "default_name".to_string()
+        // }
     }
 
     struct Dog;

@@ -1,48 +1,3 @@
-//! To use this macro,
-//!
-//! * First thing to do is config `Cargo.toml` :
-//!
-//! ```toml
-//! [dependencies]
-//! profiler_macro = {path = "../profiler_macro"}
-//! ark-std = { version = "0.4.0", optional = true }
-//!
-//! [features]
-//! profiler = ["ark-std/print-trace"] # Must use this feature!
-//! ```
-//!
-//!
-//! * Second to declare on target function:
-//! ```rust
-//!  use profiler_macro::time_profiler;
-//!
-//!  #[test]
-//!  fn test() {
-//!      #[time_profiler()] // default: with the function's name
-//!      fn outer(t: u64) {
-//!          inner(t-1);
-//!          println!("outer:{t}");
-//!      }
-//!
-//!      #[time_profiler("inner")]
-//!      fn inner(t: u64) {
-//!          println!("inner:{t}");
-//!      }
-//!
-//!      outer(4);
-//!  }
-//! ```
-//!
-//! * Profile it:
-//! ```bash
-//!  cargo test test --features profiler -- --nocapture
-//! ```
-//! * Normal run:
-//! ```bash
-//!  cargo test test -- --nocapture
-//! ```
-//!
-
 extern crate proc_macro2;
 extern crate quote;
 extern crate syn;
@@ -68,7 +23,7 @@ pub fn time_profiler(
     let func_inputs = &func_decl.inputs;
     let func_output = &func_decl.output;
 
-    let name = if attr_name.is_empty() {
+    let log_name = if attr_name.is_empty() {
         func_name.to_string()
     } else {
         attr_name.replace('\"', "")
@@ -81,7 +36,7 @@ pub fn time_profiler(
             use ark_std::{end_timer, start_timer};
 
             #[cfg(feature = "profiler")]
-            let start=  ark_std::start_timer!(|| #name);
+            let start=  ark_std::start_timer!(|| #log_name);
 
             let result =  #func_block;
 
