@@ -55,10 +55,20 @@ impl Animal for Groot {
     }
 }
 
+#[time_profiler()]
+fn have_a_pet<A>(animal: A)
+where
+    A: Animal,
+{
+    println!("pet: {:?}", A::name());
+}
+
 // cargo test trait_test --features profiler -- --nocapture
 #[test]
 fn trait_test() {
     Dog::shout();
     Cat::talk();
     Groot::self_instro();
+
+    have_a_pet(Dog);
 }
