@@ -1,4 +1,5 @@
 #![allow(unused_imports)]
+#![allow(unused)]
 
 mod docs_test;
 mod trait_test;

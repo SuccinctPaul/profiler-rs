@@ -13,7 +13,7 @@ profiler = ["ark-std/print-trace"] # Must use this feature!
 2. Second to declare macro `#[time_profiler("log_name")] `on function:
    The `log_name` can be null, macro will use the function's name as `log_name`.
 ```rust
- use profiler_macro::time_profiler;
+use profiler_macro::time_profiler;
 
 #[time_profiler()] // default: with the function's name
 fn outer(t: u64) {
