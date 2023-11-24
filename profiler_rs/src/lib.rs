@@ -2,9 +2,10 @@
 #![allow(unused)]
 
 mod docs_test;
+mod flamegraph_test;
 mod trait_test;
 
-use profiler_macro::time_profiler;
+use profiler_macro::{time_profiler, trace_flamegraph_main};
 
 // dev/product:
 // cargo test test -- --nocapture
@@ -26,4 +27,12 @@ fn test() {
     }
 
     outer(4);
+}
+
+// cargo test flamegraph_test --features flamegraph -- --nocapture
+#[test]
+#[trace_flamegraph_main()]
+fn flamegraph_test() {
+    // have_a_pet(Dog);
+    println!("hello, world");
 }
