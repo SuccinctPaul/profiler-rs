@@ -9,6 +9,14 @@ edition = "2021"
 profiler_macro = {path = "../profiler_macro"}
 ark-std = { version = "0.4.0", optional = true }
 
+# tracing+flamegraph
+inferno = { version = "0.11.6", optional = true }
+tracing = { version = "0.1.40", default-features = false, features = ["std"], optional = true }
+tracing-flame = { version = "0.2.0", optional = true }
+tracing-subscriber = {  version = "0.3.18", default-features = false, features = ["registry", "fmt", "smallvec"] , optional =  true}
+
 
 [features]
 profiler = ["ark-std/print-trace"]
+# flamegraph feature
+flamegraph = [ "inferno", "tracing", "tracing-subscriber", "tracing-flame"]
