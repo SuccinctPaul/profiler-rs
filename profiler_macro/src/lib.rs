@@ -81,7 +81,7 @@ pub fn flamegraph_profiler(
             #[cfg(feature = "flamegraph")]
             {
                 use tracing::{span, Level};
-                span!(Level::TRACE, #log_name).in_scope(|| {
+                span!(Level::TRACE, &#log_name).in_scope(|| {
                     #func_block
                  })
             }
@@ -133,7 +133,7 @@ pub fn trace_flamegraph_main(
                 use tracing_flame::FlameLayer;
                 use tracing_subscriber::{prelude::*, registry::Registry};
 
-                const PERF_DATA: &str = "tracing-flame-inferno.flame.folded";
+                const PERF_DATA: &str = "/tmp/tracing-flame-inferno.flame.folded";
                 const FLAMEGRAPH_FILE: &str = "tracing-flame-inferno.svg";
 
                 fn setup_global_collector() -> impl Drop {
@@ -161,10 +161,9 @@ pub fn trace_flamegraph_main(
 
                 // setup the flame layer
                 let guard = setup_global_collector();
-
-                span!(Level::TRACE, #log_name).in_scope(|| {
+                span!(Level::TRACE, &#log_name).in_scope(|| {
                     #func_block
-                 })
+                 });
 
 
                 // drop the guard to make sure the layer flushes its output then read the
@@ -172,11 +171,10 @@ pub fn trace_flamegraph_main(
                 drop(guard);
 
                 make_flamegraph();
-            };
+            }
 
             #[cfg(not(feature = "flamegraph"))]
             #func_block
-
         }
     };
 

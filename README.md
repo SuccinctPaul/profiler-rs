@@ -7,7 +7,7 @@ A profiler macro rely on `ark-std::{start_timer,end_timer};`.
 * Support annotated on `method/function` .
 
 ## How to use?
-[How_to_use](https://github.com/ChengYueJia/profiler-rs/tree/main/profiler_macro/USER_GUILD.md)
+[How_to_use](https://github.com/ChengYueJia/profiler-rs/tree/main/profiler_macro/USE_GUIDE.md)
 
 
 ### TODO

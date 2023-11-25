@@ -1,3 +1,5 @@
+use std::{thread::sleep, time::Duration};
+
 use profiler_macro::{flamegraph_profiler, trace_flamegraph_main};
 
 trait Animal {
@@ -6,6 +8,7 @@ trait Animal {
 
     #[flamegraph_profiler("Default Name")]
     fn default() -> String {
+        sleep(Duration::from_millis(50));
         "Groot".to_string()
     }
 }
@@ -14,6 +17,8 @@ struct Dog;
 impl Dog {
     #[flamegraph_profiler()]
     pub fn shout() {
+        sleep(Duration::from_millis(50));
+
         println!("wowowoow");
         println!("I'm a {:?}", Self::name());
     }
@@ -56,7 +61,6 @@ impl Animal for Groot {
 }
 
 #[flamegraph_profiler()]
-// #[flamegraph_profiler()]
 fn have_a_pet<A>(animal: A)
 where
     A: Animal,
@@ -64,10 +68,9 @@ where
     println!("pet: {:?}", A::name());
 }
 
-// cargo test trait_flamegraph_test --features flamegraph -- --nocapture
-#[test]
-// #[trace_flamegraph_main()]
-fn trait_flamegraph_test() {
+// cargo run --example flamegraph_simple --features flamegraph --release -- --nocapture
+#[trace_flamegraph_main()]
+fn main() {
     Dog::shout();
     Cat::talk();
     Groot::self_instro();
